@@ -228,7 +228,7 @@
       margin-bottom: 0.4rem;
     }
 
-    .form-group input, .form-group textarea {
+    .form-group input, .form-group select, .form-group textarea {
       width: 100%;
       padding: 0.7rem 0.9rem;
       border-radius: 8px;
@@ -240,7 +240,7 @@
       outline: none;
     }
 
-    .form-group input:focus, .form-group textarea:focus {
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
       border-color: var(--accent);
     }
 
@@ -353,8 +353,10 @@
       <button type="button" class="contact-btn" onclick="openModal()">✉ Mesaj Gönder</button>
       <span class="divider">•</span>
       <a href="mailto:iletisim@maviblue.win">iletisim@maviblue.win</a>
+      <!--
       <span class="divider">•</span>
       <a href="https://github.com/bilgenotlar/bilgenotlar.github.io/issues/new" target="_blank" rel="noopener">GitHub Geri Bildirim</a>
+      -->
     </div>
     <div>MaviBlue Stüdyo — maviblue.win</div>
   </footer>
@@ -377,6 +379,19 @@
         <div class="form-group">
           <label for="email">E-posta Adresiniz</label>
           <input type="email" id="email" name="email" placeholder="ornek@mail.com" required />
+        </div>
+
+        <div class="form-group">
+          <label for="app">Hangi Uygulama İçin Mesaj Göndermek İstersiniz? (İsteğe Bağlı)</label>
+          <select id="app" name="app">
+            <option value="Genel / Belirtilmedi">Genel / Belirtmek İstemiyorum</option>
+            <option value="Mavi Notlar">Mavi Notlar</option>
+            <option value="Mavi Bellek">Mavi Bellek</option>
+            <option value="Kelime & İşlem">Kelime & İşlem</option>
+            <option value="Bulmaca Sahnesi">Bulmaca Sahnesi</option>
+            <option value="Çapraz Bulmaca">Çapraz Bulmaca</option>
+            <option value="Bilginizi Sınayın">Bilginizi Sınayın</option>
+          </select>
         </div>
 
         <div class="form-group">
@@ -421,10 +436,13 @@
       submitBtn.textContent = "Gönderiliyor...";
       statusText.style.display = "none";
 
+      const selectedApp = document.getElementById("app").value;
+      const rawMessage = document.getElementById("message").value;
+
       const payload = {
         name: document.getElementById("name").value,
         email: document.getElementById("email").value,
-        message: document.getElementById("message").value,
+        message: `İlgili Uygulama: ${selectedApp}\n\n${rawMessage}`,
         botcheck: form.querySelector('input[name="botcheck"]').checked
       };
 
