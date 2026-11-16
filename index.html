@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MaviBlue — Dijital Atölye & Uygulamalar</title>
+  <title>MaviBlue Stüdyo — Dijital Atölye & Uygulamalar</title>
   <style>
     :root {
       --bg: #0b1120;
@@ -11,8 +11,11 @@
       --card-hover: #1a2642;
       --border: #233150;
       --accent: #38bdf8;
+      --accent-hover: #0ea5e9;
       --text-main: #f1f5f9;
       --text-muted: #94a3b8;
+      --success: #34d399;
+      --danger: #f87171;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -25,7 +28,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 3rem 1.5rem;
+      padding: 3rem 1.5rem 2rem;
     }
 
     header {
@@ -35,7 +38,7 @@
     }
 
     header h1 {
-      font-size: 2.2rem;
+      font-size: 2.3rem;
       letter-spacing: -0.5px;
       margin-bottom: 0.6rem;
       background: linear-gradient(90deg, #e0f2fe, var(--accent));
@@ -111,11 +114,163 @@
       font-weight: 500;
     }
 
+    /* Alt Bilgi (Footer) ve İletişim Barı */
     footer {
       margin-top: auto;
-      padding-top: 3.5rem;
+      padding-top: 4rem;
+      width: 100%;
+      max-width: 960px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
       color: var(--text-muted);
+      font-size: 0.88rem;
+    }
+
+    .contact-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 0.75rem 1.25rem;
+      padding: 0.85rem 1.5rem;
+      background: rgba(19, 28, 49, 0.75);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+    }
+
+    .contact-links a, .contact-btn {
+      color: var(--text-main);
+      text-decoration: none;
+      font-size: 0.88rem;
+      transition: color 0.2s ease;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .contact-links a:hover, .contact-btn:hover {
+      color: var(--accent);
+    }
+
+    .contact-btn {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .divider {
+      color: var(--border);
+    }
+
+    /* Açılır İletişim Penceresi (Modal) */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(5, 9, 18, 0.82);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      z-index: 1000;
+    }
+
+    .modal-backdrop.active {
+      display: flex;
+    }
+
+    .modal {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      width: 100%;
+      max-width: 440px;
+      padding: 1.75rem;
+      position: relative;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.2rem;
+    }
+
+    .modal-header h3 {
+      font-size: 1.25rem;
+      color: var(--text-main);
+    }
+
+    .close-btn {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.5rem;
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    .close-btn:hover {
+      color: var(--text-main);
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    .form-group label {
+      display: block;
       font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+    }
+
+    .form-group input, .form-group textarea {
+      width: 100%;
+      padding: 0.7rem 0.9rem;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--text-main);
+      font-family: inherit;
+      font-size: 0.95rem;
+      outline: none;
+    }
+
+    .form-group input:focus, .form-group textarea:focus {
+      border-color: var(--accent);
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 0.8rem;
+      border-radius: 8px;
+      border: none;
+      background: var(--accent);
+      color: #0b1120;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .submit-btn:hover {
+      background: var(--accent-hover);
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    #form-status {
+      margin-top: 0.9rem;
+      font-size: 0.88rem;
+      text-align: center;
+      display: none;
     }
   </style>
 </head>
@@ -145,17 +300,6 @@
       <div class="card-footer">Uygulamayı aç →</div>
     </a>
 
-<!-- HAZIR OLUNCA YORUM SATIRINI KALDIR
-    <a href="/yemek_tariflerim" class="card">
-      <div>
-        <div class="card-top"><span class="tag">Mutfak</span></div>
-        <h2>Yemek Tariflerim</h2>
-        <p>Kategorize edilmiş ev tarifleri ve pratik mutfak zamanlayıcıları.</p>
-      </div>
-      <div class="card-footer">Uygulamayı aç →</div>
-    </a>
--->
-
     <a href="/1kelime1islem" class="card">
       <div>
         <div class="card-top"><span class="tag">Oyun</span></div>
@@ -173,19 +317,8 @@
       </div>
       <div class="card-footer">Oyna →</div>
     </a>
-	
-	<!-- HAZIR OLUNCA YORUM SATIRINI KALDIR
-	<a href="/freshcart" class="card">
-      <div>
-        <div class="card-top"><span class="tag">Alışveriş</span></div>
-        <h2>Alışveriş Listem</h2>
-        <p>Markete alışverişe gitmeden listenizi yapın .</p>
-      </div>
-      <div class="card-footer">Uygulamayı aç →</div>
-    </a>
-	-->
-		
-	<a href="/crossword2026" class="card">
+
+    <a href="/caprazbulmaca" class="card">
       <div>
         <div class="card-top"><span class="tag">Oyun</span></div>
         <h2>Çapraz Bulmaca</h2>
@@ -193,8 +326,8 @@
       </div>
       <div class="card-footer">Oyna →</div>
     </a>
-	
-	<a href="/BilgeX" class="card">
+
+    <a href="/BilgeX" class="card">
       <div>
         <div class="card-top"><span class="tag">Oyun</span></div>
         <h2>Bilginizi Sınayın</h2>
@@ -202,11 +335,127 @@
       </div>
       <div class="card-footer">Oyna →</div>
     </a>
-	  </main>
+
+    <!--
+    <a href="/yemek_tariflerim" class="card">
+      <div>
+        <div class="card-top"><span class="tag">Mutfak</span></div>
+        <h2>Yemek Tariflerim</h2>
+        <p>Kategorize edilmiş ev tarifleri ve pratik mutfak zamanlayıcıları.</p>
+      </div>
+      <div class="card-footer">Uygulamayı aç →</div>
+    </a>
+    -->
+  </main>
 
   <footer>
-    maviblue.win — GitHub Pages altyapısıyla barındırılmaktadır.
+    <div class="contact-links">
+      <button type="button" class="contact-btn" onclick="openModal()">✉ Mesaj Gönder</button>
+      <span class="divider">•</span>
+      <a href="mailto:iletisim@maviblue.win">iletisim@maviblue.win</a>
+      <span class="divider">•</span>
+      <a href="https://github.com/bilgenotlar/bilgenotlar.github.io/issues/new" target="_blank" rel="noopener">GitHub Geri Bildirim</a>
+    </div>
+    <div>MaviBlue Stüdyo — maviblue.win</div>
   </footer>
+
+  <!-- Açılır İletişim Formu Penceresi -->
+  <div class="modal-backdrop" id="contactModal" onclick="closeOnBackdrop(event)">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>İletişim & Geri Bildirim</h3>
+        <button type="button" class="close-btn" onclick="closeModal()">&times;</button>
+      </div>
+      <form id="contactForm">
+        <input type="checkbox" name="botcheck" style="display: none;">
+
+        <div class="form-group">
+          <label for="name">Adınız</label>
+          <input type="text" id="name" name="name" placeholder="Adınız veya rumuzunuz" required />
+        </div>
+
+        <div class="form-group">
+          <label for="email">E-posta Adresiniz</label>
+          <input type="email" id="email" name="email" placeholder="ornek@mail.com" required />
+        </div>
+
+        <div class="form-group">
+          <label for="message">Mesajınız / Öneriniz</label>
+          <textarea id="message" name="message" rows="4" placeholder="Uygulamalarla ilgili görüş, öneri veya hata bildiriminiz..." required></textarea>
+        </div>
+
+        <button type="submit" class="submit-btn" id="submitBtn">Gönder</button>
+        <div id="form-status"></div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const CLOUDFLARE_WORKER_URL = "https://maviblue-iletisim.kemalsonmez.workers.dev";
+
+    const modal = document.getElementById("contactModal");
+    const form = document.getElementById("contactForm");
+    const statusText = document.getElementById("form-status");
+    const submitBtn = document.getElementById("submitBtn");
+
+    function openModal() {
+      modal.classList.add("active");
+    }
+
+    function closeModal() {
+      modal.classList.remove("active");
+      statusText.style.display = "none";
+    }
+
+    function closeOnBackdrop(e) {
+      if (e.target === modal) closeModal();
+    }
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") closeModal();
+    });
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Gönderiliyor...";
+      statusText.style.display = "none";
+
+      const payload = {
+        name: document.getElementById("name").value,
+        email: document.getElementById("email").value,
+        message: document.getElementById("message").value,
+        botcheck: form.querySelector('input[name="botcheck"]').checked
+      };
+
+      try {
+        const response = await fetch(CLOUDFLARE_WORKER_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        const result = await response.json();
+
+        statusText.style.display = "block";
+        if (result.success) {
+          statusText.style.color = "var(--success)";
+          statusText.textContent = "Mesajınız başarıyla iletildi. Teşekkürler!";
+          form.reset();
+          setTimeout(closeModal, 2200);
+        } else {
+          statusText.style.color = "var(--danger)";
+          statusText.textContent = "Gönderim başarısız oldu. Lütfen daha sonra tekrar deneyin.";
+        }
+      } catch (err) {
+        statusText.style.display = "block";
+        statusText.style.color = "var(--danger)";
+        statusText.textContent = "Bağlantı hatası oluştu. Doğrudan iletisim@maviblue.win adresini kullanabilirsiniz.";
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Gönder";
+      }
+    });
+  </script>
 
 </body>
 </html>
